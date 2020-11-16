@@ -1,0 +1,27 @@
+sudo: required
+
+services:
+  - docker
+
+env:
+  global:
+    - APP_NAME=simple-counter-yxlee245
+
+before_install:
+  - curl https://cli-assets.heroku.com/install.sh | sh
+  - docker build -t yxlee245/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true yxlee245/react-test npm run test
+
+after_success:
+  - echo "$HEROKU_API_KEY" | docker login -u "$HEROKU_ID" --password-stdin registry.heroku.com
+  - docker build -t registry.heroku.com/$APP_NAME/web
+
+deploy:
+  provider: script
+  script:
+    docker push registry.heroku.com/$APP_NAME/web;
+    heroku container:release web --app $APP_NAME
+  on:
+    branch: main
