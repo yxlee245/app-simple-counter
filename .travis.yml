@@ -3,10 +3,6 @@ sudo: required
 services:
   - docker
 
-env:
-  global:
-    - APP_NAME=simple-counter-yxlee245
-
 before_install:
   - curl https://cli-assets.heroku.com/install.sh | sh
   - docker build -t yxlee245/react-test -f ./client/Dockerfile.dev ./client
