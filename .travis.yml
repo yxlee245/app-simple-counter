@@ -16,7 +16,7 @@ script:
 
 after_success:
   - echo "$HEROKU_API_KEY" | docker login -u "$HEROKU_ID" --password-stdin registry.heroku.com
-  - docker build -t registry.heroku.com/$APP_NAME/web
+  - docker build -t registry.heroku.com/$APP_NAME/web ./client
 
 deploy:
   provider: script
